@@ -1,38 +1,53 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 export const HorizontalSelection = ({titles, sections, normalColor, currentColor, highlightColor = currentColor, id =' horizontalSelection'}) => {
 
-  const deriveId = (index) => `${id}-${index}-title`
-  const deriveIndex = (id) => id.split("-")[1]
+  const setPair = (title, section) => ({title:title, section:section})
 
-  const [current, setCurrent] = useState(deriveId(0))
+  const flipColor = useCallback((title, selected) => {
+    if(selected){
+      title.classList.replace(`text-${normalColor}`, `text-${currentColor}`)
+      title.classList.replace(`border-${normalColor}`, `border-${currentColor}`)
+    } else {
+      title.classList.replace(`text-${currentColor}`, `text-${normalColor}`)
+      title.classList.replace(`border-${currentColor}`, `border-${normalColor}`)
+    }
+  },[currentColor, normalColor])
+
+  const sectionPairs = useRef([])
+
+  const [currentPair, setCurrentPair] = useState(null)
 
   const handleSelection = (e) => {
-    const currentSection = document.getElementById(current)
-    currentSection.classList.replace(`text-${currentColor}`, `text-${normalColor}`)
-    currentSection.classList.replace(`border-${currentColor}`, `border-${normalColor}`)
-    setCurrent(e.target.id)
-    const newSection = document.getElementById(e.target.id)
-    newSection.classList.replace(`text-${normalColor}`, `text-${currentColor}`)
-    newSection.classList.replace(`border-${normalColor}`, `border-${currentColor}`)
+    sectionPairs.current.forEach(pair => {
+      if(pair.title === currentPair.title){
+        flipColor(pair.title)
+      }
+    })
+    flipColor(e.target, true)
+    setCurrentPair(sectionPairs.current.find(pair => (pair.title === e.target)))
   }
 
-  useEffect(()=>{
-    document.getElementById(`${id}-${0}-title`).click()
-  },[id])
+  useEffect(() => {
+    setCurrentPair(sectionPairs.current[0])
+    flipColor(sectionPairs.current[0].title, true)
+  }, [flipColor])
 
   return(
     <>
       <ul className="flex flex-wrap">
-        {titles.map(title => (
-          <li onClick={handleSelection}
-          id={deriveId(titles.indexOf(title))}
-          className={`text-center cursor-pointer py-2 px-5 border-b-2 flex-grow text-${normalColor} border-${normalColor} hover:text-${highlightColor} hover:border-${highlightColor}`}
-          key={title}>
-            {title}
-          </li>
-        ))}
+        {titles.map((title, i) => {
+          return(
+            <li 
+            ref={li => sectionPairs.current.push(setPair(li, sections[i]))}
+            onClick={handleSelection}
+            className={`text-center cursor-pointer py-2 px-5 border-b-2 flex-grow text-${normalColor} border-${normalColor} hover:text-${highlightColor} hover:border-${highlightColor}`}
+            key={`${title}-${i}`}>
+              {title}
+            </li>
+          )
+        })}
       </ul>
-      {sections[deriveIndex(current)]}
+      {currentPair && currentPair.section}
     </>
   )
 }
