@@ -2,7 +2,9 @@ import { useState, useEffect, useRef, useCallback } from "react"
 
 export const HorizontalSelection = ({titles, sections, normalColor, currentColor, highlightColor = currentColor, id =' horizontalSelection'}) => {
 
-  const setPair = (title, section) => ({title:title, section:section})
+  const sectionPairs = useRef([])
+
+  const [currentPair, setCurrentPair] = useState(null)
 
   const flipColor = useCallback((title, selected) => {
     if(selected){
@@ -13,10 +15,6 @@ export const HorizontalSelection = ({titles, sections, normalColor, currentColor
       title.classList.replace(`border-${currentColor}`, `border-${normalColor}`)
     }
   },[currentColor, normalColor])
-
-  const sectionPairs = useRef([])
-
-  const [currentPair, setCurrentPair] = useState(null)
 
   const handleSelection = (e) => {
     sectionPairs.current.forEach(pair => {
@@ -39,7 +37,7 @@ export const HorizontalSelection = ({titles, sections, normalColor, currentColor
         {titles.map((title, i) => {
           return(
             <li 
-            ref={li => sectionPairs.current.push(setPair(li, sections[i]))}
+            ref={li => sectionPairs.current.push({title:li, section:sections[i]})}
             onClick={handleSelection}
             className={`text-center cursor-pointer py-2 px-5 border-b-2 flex-grow text-${normalColor} border-${normalColor} hover:text-${highlightColor} hover:border-${highlightColor}`}
             key={`${title}-${i}`}>
