@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react"
+
 export const HorizontalSelection = ({titles, sections, normalColor, currentColor, highlightColor = currentColor, id =' horizontalSelection'}) => {
 
   const setPair = (title, section) => ({title:title, section:section})
