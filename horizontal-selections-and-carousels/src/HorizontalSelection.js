@@ -36,11 +36,10 @@ export const HorizontalSelection = ({titles, sections, normalColor, currentColor
       <ul className="flex flex-wrap">
         {titles.map((title, i) => {
           return(
-            <li 
+            <li onClick={handleSelection}
             ref={li => sectionPairs.current.push({title:li, section:sections[i]})}
-            onClick={handleSelection}
             className={`text-center cursor-pointer py-2 px-5 border-b-2 flex-grow text-${normalColor} border-${normalColor} hover:text-${highlightColor} hover:border-${highlightColor}`}
-            key={`${title}-${i}`}>
+            key={title}>
               {title}
             </li>
           )
