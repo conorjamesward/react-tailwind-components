@@ -1,6 +1,6 @@
 import {useState, useEffect, useRef} from 'react'
 
-export const SimpleCarousel = ({sections, renderDots = false, dotSize = 7, dotFill, dotDuration = 300, touchSensativity = 100}) => {
+export const SimpleCarousel = ({sections, renderDots = false, dotFill, dotSize = 7, dotDuration = 300, touchSensativity = 100}) => {
 
   const handleDotAnimation = (on, off) => {
     on.classList.replace('scale-100', 'scale-150')
