@@ -79,7 +79,7 @@ export const SimpleCarousel = ({sections, width, height, renderDots = false, dot
             {'>'}
           </button>}
         </div>
-        <div className='flex justify-center'>
+        <div className='flex justify-center mx-5'>
           {renderDots && sections.map((section, i) => 
             <button key={`dot-${i}`} onClick={() => handleCurrent(i)}
             ref={dot => sectionsRef.current.push({dot:dot, section:section})}

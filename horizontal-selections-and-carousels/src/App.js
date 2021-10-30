@@ -5,7 +5,7 @@ const App = () => {
   const range = (end) => {
     let output =  []
     for(let i = 1; i <= end; i++){
-      output.push(<div className={`h-full w-full bg-purple-${i * 100}`}></div>)
+      output.push(<div className={`w-full h-full bg-purple-${i * 100}`}></div>)
     }
     return output
   }
@@ -18,12 +18,12 @@ const App = () => {
   // highlightColor='purple-400'/>
   // <div className="h-64"></div>
 
-  const test = range(9)
+  const test = range(4)
   return(
     <div>
       <SimpleCarousel
       sections={test}
-      width={'1/3'}
+      width={'screen'}
       height={'32'}
       renderDots={true}/>
     </div>
