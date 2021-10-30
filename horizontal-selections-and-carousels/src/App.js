@@ -1,6 +1,6 @@
 import { HorizontalSelection } from "./HorizontalSelection";
 const App = () => {
-  const test = ['one', 'two', 'three', 'four','five','six','seven']
+  const test = ['one', 'two', 'three']
   return(
     <HorizontalSelection
     titles={test}

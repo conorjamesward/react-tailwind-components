@@ -4,6 +4,8 @@ export const HorizontalSelection = ({titles, sections, normalColor, currentColor
 
   const sectionPairs = useRef([])
 
+  const denominator = titles.length
+
   const [currentPair, setCurrentPair] = useState(null)
 
   const flipColor = useCallback((title, selected) => {
@@ -38,7 +40,7 @@ export const HorizontalSelection = ({titles, sections, normalColor, currentColor
           return(
             <li onClick={handleSelection}
             ref={li => sectionPairs.current.push({title:li, section:sections[i]})}
-            className={`text-center cursor-pointer py-2 px-5 border-b-2 flex-grow text-${normalColor} border-${normalColor} hover:text-${highlightColor} hover:border-${highlightColor}`}
+            className={`text-center cursor-pointer py-2 px-6 border-b-2 flex-grow w-1/${denominator} text-${normalColor} border-${normalColor} hover:text-${highlightColor} hover:border-${highlightColor}`}
             key={title}>
               {title}
             </li>
