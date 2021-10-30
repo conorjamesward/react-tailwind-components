@@ -1,6 +1,6 @@
-import {useState, useEffect, useRef} from 'react'
+import {useState, useEffect, useRef, useCallback} from 'react'
 
-export const SimpleCarousel = ({sections, renderDots = false, dotFill, dotSize = 7, dotDuration = 300, touchSensativity = 100}) => {
+export const SimpleCarousel = ({sections, width, height, renderDots = false, dotFill, dotSize = 7, dotDuration = 300, touchSensativity = 100}) => {
 
   const handleDotAnimation = (on, off) => {
     on.classList.replace('scale-100', 'scale-150')
@@ -25,7 +25,7 @@ export const SimpleCarousel = ({sections, renderDots = false, dotFill, dotSize =
 
   const [current, setCurrent] = useState(null)
 
-  const handleCurrent = (newCurrent) => {
+  const handleCurrent = useCallback((newCurrent, userEvent) => {
     let update = null
     if(newCurrent < 0){
       update = sections.length -1
@@ -36,7 +36,7 @@ export const SimpleCarousel = ({sections, renderDots = false, dotFill, dotSize =
     }
     handleDotAnimation(sectionsRef.current[update].dot, sectionsRef.current[current].dot)
     setCurrent(update)
-  }
+  },[current, sections.length])
 
   const [startTouch, setStartTouch] = useState(null)
 
@@ -63,21 +63,23 @@ export const SimpleCarousel = ({sections, renderDots = false, dotFill, dotSize =
 
   return (
 
-      <div className="bg-red-400">
+      <div className={`w-${width}`}>
         <div className="flex justify-between">
           {windowTestResult && <button id="previous" onClick={() => {handleCurrent(current - 1)}}
           className="invisible md:visible text-8xl transition duration-300 transform hover:-translate-x-2 mx-3 z-30 mt-1/2">
             {`<`}
           </button>}
-          <div onTouchStart={handleTouch} onTouchEnd={handleTouch}>
-            {Boolean(current !== null) && sectionsRef.current[current].section}
+          <div className={`absolute h-${height} w-${width}`} onTouchStart={handleTouch} onTouchEnd={handleTouch}>
+            {
+              Boolean(current !== null) && sectionsRef.current[current].section
+            }
           </div>
           {windowTestResult && <button id="next" onClick={()=>handleCurrent(current + 1)}
           className="invisible md:visible text-8xl transition duration-300 transform hover:translate-x-2 mx-3 z-30">
             {'>'}
           </button>}
         </div>
-        <div className="flex justify-center">
+        <div className='flex justify-center'>
           {renderDots && sections.map((section, i) => 
             <button key={`dot-${i}`} onClick={() => handleCurrent(i)}
             ref={dot => sectionsRef.current.push({dot:dot, section:section})}

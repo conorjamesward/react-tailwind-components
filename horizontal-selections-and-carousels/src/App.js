@@ -4,26 +4,29 @@ const App = () => {
 
   const range = (end) => {
     let output =  []
-    for(let i = 0; i <= end; i++){
-      output.push(i)
+    for(let i = 1; i <= end; i++){
+      output.push(<div className={`h-full w-full bg-purple-${i * 100}`}></div>)
     }
     return output
   }
 
-  const test = range(100)
+  // <HorizontalSelection
+  // titles={test}
+  // sections={test}
+  // currentColor='blue-200'
+  // normalColor='blue-600'
+  // highlightColor='purple-400'/>
+  // <div className="h-64"></div>
+
+  const test = range(9)
   return(
-    <>
-      <HorizontalSelection
-      titles={test}
-      sections={test}
-      currentColor='blue-200'
-      normalColor='blue-600'
-      highlightColor='purple-400'/>
-      <div className="h-64"></div>
+    <div>
       <SimpleCarousel
       sections={test}
+      width={'1/3'}
+      height={'32'}
       renderDots={true}/>
-    </>
+    </div>
   )
 }
 
